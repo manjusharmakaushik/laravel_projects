@@ -1,0 +1,16 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboards",
+      "icon": "menu-icon tf-icons ri-home-smile-line",
+      "slug": "dashboard"
+    },
+    {
+      "url": "/user-list",
+      "name": "Users",
+      "icon": "menu-icon tf-icons ri-home-smile-line",
+      "slug": "user-list"
+    }
+  ]
+}
