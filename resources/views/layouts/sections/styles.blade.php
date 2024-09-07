@@ -5,13 +5,13 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap" rel="stylesheet">
 
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+
 @vite(['resources/assets/vendor/fonts/remixicon/remixicon.scss'])
 <!-- Core CSS -->
-@vite([
-  'resources/assets/vendor/scss/core.scss',
-  'resources/assets/vendor/scss/theme-default.scss',
-  'resources/assets/css/demo.css'
-])
+@vite(['resources/assets/vendor/scss/core.scss', 'resources/assets/vendor/scss/theme-default.scss', 'resources/assets/css/demo.css'])
 
 <!-- Vendor Styles -->
 @vite(['resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.scss'])
