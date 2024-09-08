@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Exception;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
 
         return view('content.dashboard.dashboards-analytics');
     }
-    public function login(Request $request)
+    public function loginCheck(Request $request)
     {
 
         $request->validate([
@@ -41,6 +42,24 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid credentials.'
+            ]);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        try {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return response()->json([
+                'message' => 'You have been logged out successfully.',
+                'redirect' => route('login-page')
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Something Went Wrong.',
+                'redirect' => url()->previous()
             ]);
         }
     }

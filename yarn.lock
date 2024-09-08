@@ -103,6 +103,15 @@
     semver "^6.3.1"
 
 "@babel/helper-define-polyfill-provider@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@babel/helper-define-polyfill-provider/-/helper-define-polyfill-provider-0.5.0.tgz"
+  integrity sha512-NovQquuQLAQ5HuyjCz7WQP9MjRj7dx++yspwiyUiGl9ZyadHRSql1HZh5ogRd8W8w6YM6EQ/NTB8rgjLt5W65Q==
+  dependencies:
+    "@babel/helper-compilation-targets" "^7.22.6"
+    "@babel/helper-plugin-utils" "^7.22.5"
+    debug "^4.1.1"
+    lodash.debounce "^4.0.8"
+    resolve "^1.14.2"
 
 "@babel/helper-define-polyfill-provider@^0.6.2":
   version "0.6.2"
@@ -1009,6 +1018,11 @@
   resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.21.2.tgz"
   integrity sha512-B90tYAUoLhU22olrafY3JQCFLnT3NglazdwkHyxNDYF/zAxJt5fJUB/yBoWFoIQ7SQj+KLe3iL4BhOMa9fzgpw==
 
+"@rollup/rollup-linux-x64-musl@4.21.2":
+  version "4.21.2"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.21.2.tgz"
+  integrity sha512-7twFizNXudESmC9oneLGIUmoHiiLppz/Xs5uJQ4ShvE6234K0VB1/aJYU3f/4g7PhssLGKBVCC37uRkkOi8wjg==
+
 "@socket.io/component-emitter@~3.1.0":
   version "3.1.2"
   resolved "https://registry.npmjs.org/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz"
@@ -1366,8 +1380,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.3.0.tgz"
   integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
 
-bootstrap@5.3.3:
+bootstrap@^5.3.3:
   version "5.3.3"
+  resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-5.3.3.tgz"
+  integrity sha512-8HLCdWgyoMguSO9o+aH+iuZ+aht+mzW0u3HIMzVu7Srrpv7EBBxTnrFlSCskwdY1+EOFQSm7uMJhNQHkdPcmjg==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -1631,6 +1647,21 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.1:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+datatables.net-bs5@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.npmjs.org/datatables.net-bs5/-/datatables.net-bs5-2.1.6.tgz"
+  integrity sha512-GLp98kE2lJI6cBgLaCA1he+KhD3pcVJLK4QU8oD3Zb8uHAduX0BA2JPndFZqXJs4CS0L16fel8Xs3+0wGzFxSg==
+  dependencies:
+    datatables.net "2.1.6"
+    jquery ">=1.7"
+
+datatables.net@^2.1.6, datatables.net@2.1.6:
+  version "2.1.6"
+  resolved "https://registry.npmjs.org/datatables.net/-/datatables.net-2.1.6.tgz"
+  integrity sha512-ziX0Wz91oDJ4o7gQNuGxQiVK91OUu/bRcXyxa6EZtDwLObmaGKpkCNS59QpzrGtIytQIVFtLfF1EDdYid5RVog==
+  dependencies:
+    jquery ">=1.7"
 
 debug@^2.2.0:
   version "2.6.9"
@@ -2157,7 +2188,7 @@ jest-worker@^27.4.5:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-jquery@3.7.1:
+jquery@>=1.7, jquery@3.7.1:
   version "3.7.1"
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
@@ -2609,8 +2640,10 @@ regjsparser@^0.9.1:
   dependencies:
     jsesc "~0.5.0"
 
-remixicon@4.3.0:
+remixicon@^4.3.0:
   version "4.3.0"
+  resolved "https://registry.npmjs.org/remixicon/-/remixicon-4.3.0.tgz"
+  integrity sha512-jRYQ37dTFSkJtvcxwTUAkIiXkYRvA9EDvVuXPNrmt2xf/VS//CRgFtsX2TAFBoQOhh9SDh7l6La4Xu12snEyxg==
 
 require-directory@^2.1.1:
   version "2.1.1"
@@ -3018,6 +3051,11 @@ svg.resize.js@^1.4.3:
     svg.select.js "^2.1.2"
 
 svg.select.js@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/svg.select.js/-/svg.select.js-2.1.2.tgz"
+  integrity sha512-tH6ABEyJsAOVAhwcCjF8mw4crjXSI1aa7j2VQR8ZuJ37H2MBUbyeqYr5nEO7sSN3cy9AR9DUwNg0t/962HlDbQ==
+  dependencies:
+    svg.js "^2.2.5"
 
 svg.select.js@^3.0.1:
   version "3.0.1"

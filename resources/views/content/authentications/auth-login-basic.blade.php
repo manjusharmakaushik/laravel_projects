@@ -1,6 +1,6 @@
     @extends('layouts/blankLayout')
 
-    @section('title', 'Login Basic - Pages')
+    @section('title', 'Login')
 
     @section('page-style')
         @vite(['resources/assets/vendor/scss/pages/page-auth.scss'])
@@ -17,13 +17,13 @@
                         <div class="app-brand justify-content-center mt-5">
                             <a href="{{ url('/') }}" class="app-brand-link gap-3">
                                 <span class="app-brand-logo demo">@include('_partials.macros', ['height' => 20, 'withbg' => 'fill: #fff;'])</span>
-                                <span class="app-brand-text demo text-heading fw-semibold">Cipher Web Solutions</span>
+                                <span class="app-brand-text demo text-heading fw-semibold">Cipher Web Infotech</span>
                             </a>
                         </div>
                         <!-- /Logo -->
 
                         <div class="card-body mt-1">
-                            <h4 class="mb-1">Welcome to Cipher Web Solutions 👋🏻</h4>
+                            <h4 class="mb-1">Welcome to Cipher Web Infotech 👋🏻</h4>
                             <p class="mb-5">Please sign-in to your account and start the adventure</p>
                             <!-- Add this section to your form -->
                             <div id="loginErrors" class="alert alert-danger d-none" role="alert"></div>
@@ -102,7 +102,7 @@
                     var rememberMe = $('#remember-me').is(':checked') ? 1 : 0;
 
                     $.ajax({
-                        url: '{{ route('login') }}', // Update this with the route you have for login
+                        url: '{{ route('loginCheck') }}', // Update this with the route you have for login
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}', // Include CSRF token
@@ -112,15 +112,15 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success',
-                                    text: 'User Login successfully!'
-                                }).then(function() {
-                                    window.location.href = response
-                                        .redirect_url;
+                                // Swal.fire({
+                                //     icon: 'success',
+                                //     title: 'Success',
+                                //     text: 'User Login successfully!'
+                                // }).then(function() {
+                                window.location.href = response
+                                    .redirect_url;
 
-                                });
+                                // });
                             } else {
                                 alert(response.message);
                                 $('#loginErrors').removeClass('d-none').text(response.message);

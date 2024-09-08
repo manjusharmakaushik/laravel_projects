@@ -94,7 +94,8 @@
                 </li>
                 <li>
                     <div class="d-grid px-4 pt-2 pb-1">
-                        <a class="btn btn-danger d-flex" href="javascript:void(0);">
+                        <a id="logout-link" class="btn btn-danger d-flex" href="javascript:void(0);"
+                            data-url="{{ route('logout') }}">
                             <small class="align-middle">Logout</small>
                             <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
                         </a>
@@ -110,4 +111,44 @@
     </div>
 @endif
 </nav>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+
+            var logoutUrl = $(this).data('url');
+            $.ajax({
+                url: logoutUrl,
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Logged Out',
+                        text: response.message,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = response
+                            .redirect; // Redirect to the login page
+                    });
+                },
+                error: function(response) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: response.responseJSON.message,
+                        icon: 'error',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 <!-- / Navbar -->

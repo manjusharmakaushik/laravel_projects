@@ -22,21 +22,25 @@
             <div class="card-header">
                 <h5 class="card-title mb-0">Add User Information</h5>
             </div>
+
             <div class="card-body">
-                <form id="userForm">
+                <form id="edituserForm" method="POST" action="{{ route('user-update', $editUser->id) }}"
+                    enctype="multipart/form-data">
                     @csrf
+
+                    @method('PUT')
                     <div class="row gx-5 mb-5">
                         <div class="col">
                             <div class="form-floating form-floating-outline">
                                 <input type="text" class="form-control" id="name" placeholder="Enter Name"
-                                    name="name" aria-label="Full Name">
+                                    name="name" aria-label="Full Name" value="{{ $editUser->name ?? '' }}">
                                 <label for="name">Full Name</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-floating form-floating-outline">
                                 <input type="email" class="form-control" id="email" placeholder="Enter Email"
-                                    name="email" aria-label="Email">
+                                    name="email" aria-label="Email" value="{{ $editUser->email ?? '' }}">
                                 <label for="email">Email</label>
                             </div>
                         </div>
@@ -45,21 +49,15 @@
                         <div class="col">
                             <div class="form-floating form-floating-outline">
                                 <input type="number" class="form-control" id="number" placeholder="Enter Number"
-                                    name="number" aria-label="Phone Number">
+                                    name="number" aria-label="Phone Number" value="{{ $editUser->number ?? '' }}">
                                 <label for="number">Number</label>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-floating form-floating-outline">
-                                <input type="password" class="form-control" id="password"
-                                    placeholder="Enter Minimum 6 digit password" name="password" aria-label="Password">
-                                <label for="password">Password</label>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="text-end mt-3">
-                        <button type="submit" id="submitForm"
-                            class="btn btn-primary waves-effect waves-light">Save</button>
+                        <button type="submit" id="submitForm" class="btn btn-primary waves-effect waves-light">Save
+                            Change</button>
                     </div>
                 </form>
             </div>
@@ -68,39 +66,45 @@
 
     <script>
         $(document).ready(function() {
-            $('#userForm').on('submit', function(e) {
-                e.preventDefault(); // Prevent form submission
+            $('#edituserForm').on('submit', function(event) {
+                event.preventDefault();
+
+                var form = $(this);
+                var url = form.attr('action');
+                var formData = new FormData(this);
 
                 $.ajax({
-                    url: "{{ route('user-store') }}", // Laravel route for storing user data
-                    type: "POST",
-                    data: $(this).serialize(),
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
                     success: function(response) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: 'User added successfully!'
+                            text: 'User Update successfully!'
                         }).then(function() {
                             window.location.href = "{{ route('user-list') }}";
                         });
                     },
-                    error: function(xhr, status, error) {
-                        // Display error alert if something goes wrong
+                    error: function(response) {
+                        let errors = response.responseJSON.errors;
+                        let errorMessage = '';
+                        for (let key in errors) {
+                            if (errors.hasOwnProperty(key)) {
+                                errorMessage += errors[key][0] + '\n';
+                            }
+                        }
                         Swal.fire({
-                            title: 'Error!',
-                            text: xhr.responseText,
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            title: 'Error',
+                            text: errorMessage
                         });
                     }
                 });
-
             });
         });
     </script>
-
-
-
-
 
 @endsection
