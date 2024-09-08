@@ -50,10 +50,19 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="form-floating form-floating-outline">
-                                <input type="password" class="form-control" id="password"
-                                    placeholder="Enter Minimum 6 digit password" name="password" aria-label="Password">
-                                <label for="password">Password</label>
+                            <div class="mb-5">
+                                <div class="form-password-toggle">
+                                    <div class="input-group input-group-merge">
+                                        <div class="form-floating form-floating-outline">
+                                            <input type="password" id="password" class="form-control" name="password"
+                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                                aria-describedby="password" />
+                                            <label for="password">Password</label>
+                                        </div>
+                                        <span class="input-group-text cursor-pointer"><i
+                                                class="ri-eye-off-line ri-20px"></i></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
