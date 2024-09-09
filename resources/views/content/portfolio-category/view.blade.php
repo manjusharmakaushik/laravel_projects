@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Dashboard - Analytics')
+@section('title', 'Portfolio category')
 
 @section('vendor-style')
     @vite('resources/assets/vendor/libs/apex-charts/apex-charts.scss')
@@ -15,41 +15,39 @@
 @endsection
 
 @section('content')
-    {{-- {{ dump($viewUser) }} --}}
+    {{-- {{ dump($viewPortfolioCategory) }} --}}
     <!-- User Information -->
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <h3>User Information</h3>
+                <h3>Portfolio Category Information</h3>
+
                 <div class="row g-3 mt-3">
                     <div class="col-md-4">
-                        <label class="form-label" style="font-weight: bold;">Name</label>
-                        <p class="form-control-plaintext">{{ $viewUser->name }}</p>
+                        <label class="form-label" style="font-weight: bold;">Category Name</label>
+                        <p class="form-control-plaintext">{{ $viewPortfolioCategory->category_name ?? '' }}</p>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label" style="font-weight: bold;">Number</label>
-                        <p class="form-control-plaintext">{{ $viewUser->number }}</p>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label" style="font-weight: bold;">Email</label>
-                        <p class="form-control-plaintext">{{ $viewUser->email }}</p>
+                        <label class="form-label" style="font-weight: bold;">Category Image</label>
+                        <p class="form-control-plaintext">{{ $viewPortfolioCategory->category_image ?? '' }}</p>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label" style="font-weight: bold;">Status</label>
                         <p>
-                        <div class="badge {{ $viewUser->status == 1 ? 'bg-label-success' : 'bg-label-danger' }}">
-                            {{ $viewUser->status == 1 ? 'Active' : 'Inactive' }}
+                        <div
+                            class="badge {{ $viewPortfolioCategory->status == 1 ? 'bg-label-success' : 'bg-label-danger' }}">
+                            {{ $viewPortfolioCategory->status == 1 ? 'Active' : 'Inactive' }}
                         </div>
                         </p>
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label" style="font-weight: bold;">Created At</label>
-                        <p class="form-control-plaintext">{{ $viewUser->created_at }}</p>
+                        <p class="form-control-plaintext">{{ $viewPortfolioCategory->created_at }}</p>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label" style="font-weight: bold;">Updated At</label>
-                        <p class="form-control-plaintext">{{ $viewUser->updated_at }}</p>
+                        <p class="form-control-plaintext">{{ $viewPortfolioCategory->updated_at }}</p>
                     </div>
                     <div class="col-12">
                         <a href="{{ route('user-list') }}" class="btn btn-primary">Back to List</a>

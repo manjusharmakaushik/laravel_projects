@@ -11,6 +11,30 @@
       "name": "Users",
       "icon": "menu-icon tf-icons ri-user-line",
       "slug": "user-list"
+    },
+    {
+      "url": "/service-list",
+      "name": "Services",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "service-list"
+    },
+    {
+      "url": "/portfolio-cat-list",
+      "name": "Portfolio Category",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "portfolio-cat-list"
+    },
+    {
+      "url": "/portfolio-list",
+      "name": "Portfolio",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "portfolio-list"
+    },
+    {
+      "url": "/client-list",
+      "name": "Client",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "client-list"
     }
   ]
 }

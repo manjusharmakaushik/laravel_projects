@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PortfolioCategoryController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -29,4 +30,14 @@ Route::middleware('auth')->group(function () {
     Route::get('user-delete/{id}', [UserController::class, 'destory'])->name('user-delete');
     Route::post('user-status/{id}', [UserController::class, 'updateStatus'])->name('updateStatus');
 
+    //service category
+    Route::get('/portfolio-cat-list', [PortfolioCategoryController::class, 'index'])->name('portfolio-cat-list');
+
+    Route::get('/portfolio-cat-create', [PortfolioCategoryController::class, 'create'])->name('portfolio-cat-create');
+    Route::post('/portfolio-cat-store', [PortfolioCategoryController::class, 'store'])->name('portfolio-cat-store');
+    Route::get('portfolio-cat-edit/{id}', [PortfolioCategoryController::class, 'edit'])->name('portfolio-cat-edit');
+    Route::put('portfolio-cat-update/{id}', [PortfolioCategoryController::class, 'update'])->name('portfolio-cat-update');
+    Route::get('portfolio-cat-view/{id}', [PortfolioCategoryController::class, 'view'])->name('portfolio-cat-view');
+    Route::get('portfolio-cat-delete/{id}', [PortfolioCategoryController::class, 'destory'])->name('portfolio-cat-delete');
+    Route::post('portfolio-cat-status/{id}', [PortfolioCategoryController::class, 'updateStatus'])->name('updateStatus');
 });

@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Users')
+@section('title', 'Portfolio category')
 
 @section('vendor-style')
     <style>
@@ -20,10 +20,10 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#userDataTbale').DataTable({
+            $('#service-categoryDatatabel').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('user-list') }}',
+                ajax: '{{ route('portfolio-cat-list') }}',
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -31,16 +31,12 @@
                         searchable: false
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'category_name',
+                        name: 'category_name'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'number',
-                        name: 'number'
+                        data: 'category_image',
+                        name: 'category_image'
                     },
                     {
                         data: 'status',
@@ -51,7 +47,6 @@
                             return `<div class="badge ${statusClass}" data-id="${row.id}" id="status-${row.id}">${statusText}</div>`;
                         }
                     },
-
 
                     {
                         data: 'action',
@@ -65,11 +60,11 @@
                 initComplete: function() {
                     // Append the add button after the search input
                     $(".dataTables_filter").prepend(
-                        '<button class="btn btn-primary mr-3" id="addUser">Add User</button>'
+                        '<button class="btn btn-primary mr-3" id="addUser">Add Portfolio Category</button>'
                     );
                     $('#addUser').on('click', function() {
                         window.location.href =
-                            '{{ route('user-create') }}'; // Add your URL for user creation here
+                            '{{ route('portfolio-cat-create') }}'; // Add your URL for user creation here
                     });
                 }
             });
@@ -82,7 +77,7 @@
                 var newStatus = currentStatus === 1 ? 0 : 1;
 
                 $.ajax({
-                    url: '/user-status/' + userId,
+                    url: '/portfolio-cat-status/' + userId,
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -130,7 +125,7 @@
                 if (result.isConfirmed) {
                     // Send AJAX request to delete category
                     $.ajax({
-                        url: '/user-delete/' + userId,
+                        url: '/portfolio-cat-delete/' + userId,
                         type: 'GET', // or 'POST' depending on your route definition
                         success: function(response) {
                             Swal.fire(
@@ -139,7 +134,7 @@
                                 'success'
                             ).then(() => {
                                 // Optionally, reload the table or update the UI
-                                $('#userDataTbale').DataTable().ajax
+                                $('#service-categoryDatatabel').DataTable().ajax
                                     .reload(); // Reload DataTable
                             });
                         },
@@ -162,13 +157,13 @@
 
 @section('content')
 
-    <table id="userDataTbale" class="table table-bordered">
+
+    <table id="service-categoryDatatabel" class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Number</th>
+                <th>Category Name</th>
+                <th>Category Image</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>

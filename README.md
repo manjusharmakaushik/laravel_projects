@@ -263,3 +263,4 @@ If you want to [Download Free Admin Templates](https://themeselection.com/item/c
 ============================= Project Guide ============================
 
 1. php artisan migrate --seed
+2. npm install --save-dev vite
