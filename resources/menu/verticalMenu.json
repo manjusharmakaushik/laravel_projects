@@ -35,6 +35,30 @@
       "name": "Client",
       "icon": "menu-icon tf-icons ri-user-line",
       "slug": "client-list"
+    },
+    {
+      "url": "/service-sector-list",
+      "name": "Service Sector",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "service-sector-list"
+    },
+    {
+      "url": "/client-testimonials-list",
+      "name": "Testimonials",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "client-testimonials-list"
+    },
+    {
+      "url": "/service-tech-cat-list",
+      "name": "Service Tech Category",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "service-tech-cat-list"
+    },
+    {
+      "url": "/service-tech-list",
+      "name": "Service Tech",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "service-tech-list"
     }
   ]
 }

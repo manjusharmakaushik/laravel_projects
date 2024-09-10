@@ -42,13 +42,13 @@
                         data: 'image',
                         name: 'image',
                         render: function(data, type, row) {
-                           
-                            var imageUrl =  data;
-                            
-                            return `<img src="${imageUrl}" alt="Image" style="width:100px; height:auto;">`;
+
+                            var imageUrl = data;
+
+                            return `<img src="${imageUrl}" alt="Image" class="mt-3" style="width:130px; height:80px;">`;
                         }
                     },
-                                {
+                    {
                         data: 'status',
                         name: 'status',
                         render: function(data, type, row) {
@@ -69,13 +69,13 @@
                 dom: '<"top"lf>rt<"bottom"ip><"clear">',
                 autoWidth: false,
                 initComplete: function() {
-                   
+
                     $(".dataTables_filter").prepend(
                         '<button class="btn btn-primary mr-3" id="addService">Add Service</button>'
                     );
                     $('#addService').on('click', function() {
                         window.location.href =
-                            '{{ route('service-create') }}'; 
+                            '{{ route('service-create') }}';
                     });
                 }
             });
@@ -101,7 +101,7 @@
                             'success'
                         );
 
-                      
+
                         var newStatusText = newStatus === 1 ? 'Active' : 'Inactive';
                         var newStatusClass = newStatus === 1 ? 'bg-label-success' :
                             'bg-label-danger';
@@ -134,19 +134,19 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    
+
                     $.ajax({
                         url: '/service-delete/' + serviceId,
-                        type: 'GET', 
+                        type: 'GET',
                         success: function(response) {
                             Swal.fire(
                                 'Deleted!',
                                 'Your service has been deleted.',
                                 'success'
                             ).then(() => {
-                               
+
                                 $('#serviceDataTable').DataTable().ajax
-                                    .reload(); 
+                                    .reload();
                             });
                         },
                         error: function(xhr) {
@@ -155,7 +155,7 @@
                                 'Failed to delete service.',
                                 'error'
                             );
-                            console.error(xhr.responseText); 
+                            console.error(xhr.responseText);
                         }
                     });
                 }

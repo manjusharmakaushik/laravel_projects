@@ -10,7 +10,7 @@ use Yajra\DataTables\DataTables;
 use Exception;
 
 class ServiceController extends Controller
-{   
+{
     public function index()
     {
         if (request()->ajax()) {
@@ -35,9 +35,6 @@ class ServiceController extends Controller
                             </div>';
                 })
 
-
-
-
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
@@ -45,7 +42,7 @@ class ServiceController extends Controller
         return view('content.services.service-list');
     }
 
-    
+
     public function create()
     {
         return view('content.services.service-add');
@@ -57,37 +54,29 @@ class ServiceController extends Controller
             'description' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    
+
         $service = new Service();
         $service->service_name = $request->name;
         $service->sort_desc = $request->description;
-    
-        
+
         if ($request->hasFile('image')) {
-        
+
             $image = $request->file('image');
-            
-         
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            
-            
             $imagePath = 'images/' . $imageName;
-         
             $image->move(public_path('images'), $imageName);
-            
-           
             $service->image = $imagePath;
+
         }
-    
+
         $service->save();
-    
         return redirect()->route('service-list')->with('success', 'Service added successfully!');
     }
-    
+
     public function edit(Request $request, $id)
     {
         try {
@@ -103,13 +92,18 @@ class ServiceController extends Controller
     public function destory(Request $request, $id)
     {
         try {
-            $deleteService = Service::findOrFail($id)->delete();
-            return redirect()->route('service-list')->with('success', 'Service Delete successfully added!');
+            $service = Service::findOrFail($id);
+            if ($service->image && file_exists(public_path($service->image))) {
+                unlink(public_path($service->image));
+            }
+            $service->delete();
+
+            return redirect()->route('service-list')->with('success', 'Service deleted successfully!');
         } catch (Exception $e) {
             return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
-
         }
     }
+
     public function update(Request $request, $id)
     {
         // Validate the request data
@@ -118,35 +112,36 @@ class ServiceController extends Controller
             'description' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
-       
+
+        // Find the service by ID or fail
         $service = Service::findOrFail($id);
-    
-       
+
+        // Prepare data to update the service
         $data = [
             'service_name' => $request->name,
             'sort_desc' => $request->description,
         ];
-    
-      
+
+        // Handle the image upload
         if ($request->hasFile('image')) {
-            
+            // Check if there is an old image and if it exists, delete it
+            if ($service->image && file_exists(public_path($service->image))) {
+                unlink(public_path($service->image)); // Delete the previous image
+            }
+
+            // Process the new image
             $image = $request->file('image');
-            
-            
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            
-          
             $imagePath = 'images/' . $imageName;
-            
-            
+
+            // Move the new image to the images folder
             $image->move(public_path('images'), $imageName);
-            
-            
+
+            // Add the new image path to the update data
             $data['image'] = $imagePath;
         }
-    
-        
+
+        // Attempt to update the service in the database
         try {
             $service->update($data);
             return redirect()->route('service-list')->with('success', 'Service updated successfully!');
@@ -154,7 +149,7 @@ class ServiceController extends Controller
             return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
         }
     }
-    
+
     public function updateStatus(Request $request, $id)
     {
         try {
@@ -176,6 +171,6 @@ class ServiceController extends Controller
             return redirect()->route('user-list')->with('error', 'Something went wrong! Please try again.');
         }
     }
-    
+
 
 }
