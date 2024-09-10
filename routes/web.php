@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\PortfolioCategoryController;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,8 +30,16 @@ Route::middleware('auth')->group(function () {
     Route::get('user-view/{id}', [UserController::class, 'view'])->name('user-view');
     Route::get('user-delete/{id}', [UserController::class, 'destory'])->name('user-delete');
     Route::post('user-status/{id}', [UserController::class, 'updateStatus'])->name('updateStatus');
-
     //service category
+    Route::get('/service-list', [ServiceController::class, 'index'])->name('service-list');
+    Route::get('/service-create', [ServiceController::class, 'create'])->name('service-create');
+    Route::post('/service-store', [ServiceController::class, 'store'])->name('service-store');
+    Route::get('service-edit/{id}', [ServiceController::class, 'edit'])->name('service-edit');
+    Route::put('service-update/{id}', [ServiceController::class, 'update'])->name('service-update');
+    Route::get('service-view/{id}', [ServiceController::class, 'view'])->name('service-view');
+    Route::get('service-delete/{id}', [ServiceController::class, 'destory'])->name('service-delete');
+    Route::post('service-status/{id}', [ServiceController::class, 'updateStatus'])->name('updateStatus');
+    //portfolio category
     Route::get('/portfolio-cat-list', [PortfolioCategoryController::class, 'index'])->name('portfolio-cat-list');
 
     Route::get('/portfolio-cat-create', [PortfolioCategoryController::class, 'create'])->name('portfolio-cat-create');
