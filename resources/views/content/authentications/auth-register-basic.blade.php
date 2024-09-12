@@ -54,7 +54,7 @@
                   I agree to
                   <a href="javascript:void(0);">privacy policy & terms</a>
                 </label>
-              </div>
+               </div>
             </div>
             <button class="btn btn-primary d-grid w-100 mb-5">
               Sign up

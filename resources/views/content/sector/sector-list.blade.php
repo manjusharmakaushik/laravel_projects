@@ -20,10 +20,10 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#serviceDataTable').DataTable({
+            $('#sectorDataTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('service-list') }}',
+                ajax: '{{ route('sector-list') }}',
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -31,38 +31,44 @@
                         searchable: false
                     },
                     {
-                        data: 'service_name',
-                        name: 'service_name'
+                        data: 'sector_name',
+                        name: 'sector_name'
                     },
-                    {
-                        data: 'sort_desc',
-                        name: 'sort_desc'
-                    },
+                    // {
+                    //     data: 'sort_desc',
+                    //     name: 'sort_desc'
+                    // },
                     {
     data: 'image',
     name: 'image',
     render: function(data, type, row) {
         var imageUrl = data;
-        var defaultImageUrl = 'assets/def-image/no-image.png';
+        var fallbackImageUrl = 'assets/def-image/no-image.png';
 
-        // Return an image element with CSS fallback
         return `
             <div style="
                 width: 130px; 
                 height: 80px; 
-                background-image: url('${defaultImageUrl}');
-                background-size: cover; 
-                background-position: center;
-                background-repeat: no-repeat;
-                text-align: center;
-                line-height: 80px;
-                color: #999;
+                position: relative;
+                overflow: hidden;
             ">
-                <img src="${imageUrl}" onerror="this.style.display='none'; this.parentElement.style.backgroundImage='url(${defaultImageUrl})';" 
-                     alt="Image" style="width:130px; height:80px; display:block;"/>
+                <img src="${imageUrl}" 
+                     onerror="this.src='${fallbackImageUrl}'; this.onerror=null;" 
+                     alt="Image" 
+                     style="
+                         width: 50px; 
+                         height: 50px; 
+                         object-fit: cover;
+                         position: absolute;
+                         top: 0;
+                         left: 0;
+                         z-index: 1;
+                     "/>
             </div>`;
     }
 },
+
+
 
 
                     {
@@ -88,11 +94,11 @@
                 initComplete: function() {
 
                     $(".dataTables_filter").prepend(
-                        '<button class="btn btn-primary mr-3" id="addService">Add Service</button>'
+                        '<button class="btn btn-primary mr-3" id="addSector">Add Sector</button>'
                     );
-                    $('#addService').on('click', function() {
+                    $('#addSector').on('click', function() {
                         window.location.href =
-                            '{{ route('service-create') }}';
+                            '{{ route('sector-create') }}';
                     });
                 }
             });
@@ -105,7 +111,7 @@
                 var newStatus = currentStatus === 1 ? 0 : 1;
 
                 $.ajax({
-                    url: '/service-status/' + serviceId,
+                    url: '/sector-status/' + serviceId,
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -114,7 +120,7 @@
                     success: function(response) {
                         Swal.fire(
                             'Updated!',
-                            'Service status has been updated.',
+                            'Sector status has been updated.',
                             'success'
                         );
 
@@ -130,7 +136,7 @@
                     error: function(xhr) {
                         Swal.fire(
                             'Error!',
-                            'Failed to update service status.',
+                            'Failed to update sector status.',
                             'error'
                         );
                         console.error(xhr.responseText);
@@ -153,16 +159,16 @@
                 if (result.isConfirmed) {
 
                     $.ajax({
-                        url: '/service-delete/' + serviceId,
+                        url: '/sector-delete/' + serviceId,
                         type: 'GET',
                         success: function(response) {
                             Swal.fire(
                                 'Deleted!',
-                                'Your service has been deleted.',
+                                'Your service sector has been deleted.',
                                 'success'
                             ).then(() => {
 
-                                $('#serviceDataTable').DataTable().ajax
+                                $('#sectorDataTable').DataTable().ajax
                                     .reload();
                             });
                         },
@@ -185,12 +191,12 @@
 
 @section('content')
 
-    <table id="serviceDataTable" class="table table-bordered">
+    <table id="sectorDataTable" class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Description</th>
+                <!-- <th>Description</th> -->
                 <th>Image</th>
                 <th>Status</th>
                 <th>Actions</th>

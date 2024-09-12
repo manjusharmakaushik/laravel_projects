@@ -23,7 +23,7 @@
             </div>
 
             <div class="card-body">
-                <form id="editserviceForm" action="{{ route('service-update', $editService->id) }}" method="POST"
+                <form id="editserviceForm" action="{{ route('sector-update', $editSector->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -33,9 +33,9 @@
                         <div class="col">
                             <div class="form-floating form-floating-outline">
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    id="name" placeholder="Enter Services Name" name="name" aria-label="Full Name"
-                                    value="{{ old('name', $editService->service_name ?? '') }}">
-                                <label for="name">Services Name</label>
+                                    id="name" placeholder="Enter Services Sector Name" name="name" aria-label="Full Name"
+                                    value="{{ old('name', $editSector->sector_name ?? '') }}">
+                                <label for="name">Services Sector Name</label>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -52,32 +52,21 @@
                                 <!-- Image preview container -->
                                 <div class="mt-3">
                                     <!-- Display the current image if it exists -->
-                                    @if ($editService->image && file_exists(public_path($editService->image)))
+                                    @if ($editSector->image && file_exists(public_path($editSector->image)))
                                         <!-- Display the current image if it exists -->
-                                        <img src="{{ asset($editService->image) }}" id="currentImage" alt="Current Image" style="width: 150px; height: auto;">
+                                        <img src="{{ asset($editSector->image) }}" id="currentImage" alt="Current Image" style="width: 50px; height: auto;">
                                     @else
                                         <!-- Display the default "no image" placeholder -->
-                                        <img src="{{ asset('assets/def-image/no-image.png') }}" id="currentImage"  class=" waves-light" alt="No Image Available" style="width: 100px; height: auto;border:2px solid grey;">
+                                        <img src="{{ asset('assets/def-image/no-image.png') }}" id="currentImage"  class=" waves-light" alt="No Image Available" style="width:50px;height: auto;border:2px solid grey;">
                                     @endif
                                     <!-- Preview the new image -->
                                     <img id="imagePreview" src="" alt="Image preview"
-                                        style="display: none; width: 150px; height: auto; object-fit: cover;">
+                                        style="display: none; width: 50px; height: auto; object-fit: cover;">
                                 </div>
                                 @error('image')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Short Description -->
-                    <div class="row gx-5 mb-5">
-                        <div class="col-sm-6">
-                            <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror"
-                                placeholder="Short Description" aria-label="Short Description">{{ old('description', $editService->sort_desc ?? '') }}</textarea>
-                            @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                     </div>
 
@@ -128,7 +117,7 @@
                 // Client-side validation
                 if ($('#name').val().trim() === '') {
                     $('#name').addClass('is-invalid');
-                    $('#name').after('<div class="invalid-feedback">Service Name is required.</div>');
+                    $('#name').after('<div class="invalid-feedback">Sector Name is required.</div>');
                     valid = false;
                 }
 
@@ -138,11 +127,11 @@
                     valid = false;
                 }
 
-                if ($('#description').val().trim() === '') {
-                    $('#description').addClass('is-invalid');
-                    $('#description').after('<div class="invalid-feedback">Description is required.</div>');
-                    valid = false;
-                }
+                // if ($('#description').val().trim() === '') {
+                //     $('#description').addClass('is-invalid');
+                //     $('#description').after('<div class="invalid-feedback">Description is required.</div>');
+                //     valid = false;
+                // }
 
                 if (!valid) return;
 
@@ -156,9 +145,9 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: 'Service updated successfully!'
+                            text: 'Sector updated successfully!'
                         }).then(function() {
-                            window.location.href = "{{ route('service-list') }}";
+                            window.location.href = "{{ route('sector-list') }}";
                         });
                     },
                     error: function(response) {

@@ -3,24 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Service;
+use App\Models\Sector;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use Exception;
 
-class ServiceController extends Controller
+class ServiceSectorController extends Controller
 {
+
     public function index()
     {
         if (request()->ajax()) {
-            $data = Service::select(['id', 'service_name', 'sort_desc', 'image', 'status']);
+            $data = Sector::select(['id', 'sector_name', 'image', 'status']);
             return DataTables::of($data)
                 ->addIndexColumn()
 
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('service-edit', ['id' => $row->id]);
-                    $viewUrl = route('service-view', ['id' => $row->id]);
+                    $editUrl = route('sector-edit', ['id' => $row->id]);
+                    $viewUrl = route('sector-view', ['id' => $row->id]);
 
                     return '<div class="d-inline-block text-nowrap">
                                 <a href="' . $viewUrl . '" class="btn btn-sm btn-icon btn-text-secondary waves-effect rounded-pill text-body me-1 view-button">
@@ -39,19 +40,23 @@ class ServiceController extends Controller
                 ->make(true);
         }
    
-        return view('content.services.service-list');
+        return view('content.sector.sector-list');
     }
+    
 
 
     public function create()
     {
-        return view('content.services.service-add');
+        return view('content.sector.sector-add');
     }
+     
+
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            // 'description' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -59,9 +64,9 @@ class ServiceController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $service = new Service();
-        $service->service_name = $request->name;
-        $service->sort_desc = $request->description;
+        $service = new Sector();
+        $service->sector_name = $request->name;
+        // $service->sort_desc = $request->description;
 
         if ($request->hasFile('image')) {
 
@@ -70,56 +75,40 @@ class ServiceController extends Controller
             $imagePath = 'images/' . $imageName;
             $image->move(public_path('images'), $imageName);
             $service->image = $imagePath;
-
-        }
+         }
 
         $service->save();
-        return redirect()->route('service-list')->with('success', 'Service added successfully!');
-    }
+        return redirect()->route('sector-list')->with('success', 'Service Sector added successfully!');
+    }   
+
 
     public function edit(Request $request, $id)
     {
         try {
-            $editService = Service::findOrFail($id);
-            return view('content.services.service-edit', compact('editService'));
+            $editSector = Sector::findOrFail($id);
+            return view('content.sector.sector-edit', compact('editSector'));
         } catch (Exception $e) {
-            return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
+            return redirect()->route('sector-list')->with('error', 'Something went wrong! Please try again.');
 
         }
     }
-
-
-    public function destory(Request $request, $id)
-    {
-        try {
-            $service = Service::findOrFail($id);
-            if ($service->image && file_exists(public_path($service->image))) {
-                unlink(public_path($service->image));
-            }
-            $service->delete();
-
-            return redirect()->route('service-list')->with('success', 'Service deleted successfully!');
-        } catch (Exception $e) {
-            return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
-        }
-    }
-
+    
     public function update(Request $request, $id)
     {
         // Validate the request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            // 'description' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Find the service by ID or fail
-        $service = Service::findOrFail($id);
+        $service = Sector::findOrFail($id);
 
         // Prepare data to update the service
         $data = [
-            'service_name' => $request->name,
-            'sort_desc' => $request->description,
+            'sector_name' => $request->name
+            
         ];
 
         // Handle the image upload
@@ -144,20 +133,37 @@ class ServiceController extends Controller
         // Attempt to update the service in the database
         try {
             $service->update($data);
-            return redirect()->route('service-list')->with('success', 'Service updated successfully!');
+            return redirect()->route('sector-list')->with('success', 'Sector updated successfully!');
         } catch (Exception $e) {
-            return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
+            return redirect()->route('sector-list')->with('error', 'Something went wrong! Please try again.');
+        }
+    }
+
+
+
+    public function destory(Request $request, $id)
+    {
+        try {
+            $service = Sector::findOrFail($id);
+            if ($service->image && file_exists(public_path($service->image))) {
+                unlink(public_path($service->image));
+            }
+            $service->delete();
+
+            return redirect()->route('sector-list')->with('success', 'Sector deleted successfully!');
+        } catch (Exception $e) {
+            return redirect()->route('sector-list')->with('error', 'Something went wrong! Please try again.');
         }
     }
 
     public function updateStatus(Request $request, $id)
     {
         try {
-            $serviceStatus = Service::findOrFail($id);
+            $serviceStatus = Sector::findOrFail($id);
             $serviceStatus->status = $request->status;
             $serviceStatus->save();
 
-            return response()->json(['success' => 'User Status status updated successfully.']);
+            return response()->json(['success' => 'Sector Status status updated successfully.']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to update User Status status.'], 500);
         }
@@ -165,12 +171,17 @@ class ServiceController extends Controller
     public function view(Request $request, $id)
     {
         try {
-            $viewService = Service::findOrFail($id);
-            return view('content.services.service-view', compact('viewService'));
+            $viewService = Sector::findOrFail($id);
+            return view('content.sector.sector-view', compact('viewService'));
         } catch (Exception $e) {
-            return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
+            return redirect()->route('sector-list')->with('error', 'Something went wrong! Please try again.');
         }
     }
+
+
+
+
+
 
 
 }

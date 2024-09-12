@@ -5,13 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
-{  
+class sector extends Model
+{
     use HasFactory;
-    protected $fillable = [
-        'service_name',
-        'sort_desc',
-        'image',
-        'status'
-    ];
+    protected $fillable =['sector_name','status','image'];
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ServiceSectorController;
 use App\Http\Controllers\PortfolioCategoryController;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,6 +40,16 @@ Route::middleware('auth')->group(function () {
     Route::get('service-view/{id}', [ServiceController::class, 'view'])->name('service-view');
     Route::get('service-delete/{id}', [ServiceController::class, 'destory'])->name('service-delete');
     Route::post('service-status/{id}', [ServiceController::class, 'updateStatus'])->name('updateStatus');
+
+    //service sector
+    Route::get('/service-sector-list', [ServiceSectorController::class, 'index'])->name('sector-list');
+    Route::get('/sector-create', [ServiceSectorController::class, 'create'])->name('sector-create');
+    Route::post('/sector-store', [ServiceSectorController::class, 'store'])->name('sector-store');
+    Route::get('sector-edit/{id}', [ServiceSectorController::class, 'edit'])->name('sector-edit');
+    Route::put('sector-update/{id}', [ServiceSectorController::class, 'update'])->name('sector-update');
+    Route::get('sector-view/{id}', [ServiceSectorController::class, 'view'])->name('sector-view');
+    Route::get('sector-delete/{id}', [ServiceSectorController::class, 'destory'])->name('sector-delete');
+    Route::post('sector-status/{id}', [ServiceSectorController::class, 'updateStatus'])->name('updateStatus');
     //portfolio category
     Route::get('/portfolio-cat-list', [PortfolioCategoryController::class, 'index'])->name('portfolio-cat-list');
 
