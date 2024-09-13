@@ -18,6 +18,13 @@
       "icon": "menu-icon tf-icons ri-user-line",
       "slug": "service-list"
     },
+
+    {
+      "url": "/blog-list",
+      "name": "Blog",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "blog-list"
+    },
     {
       "url": "/portfolio-cat-list",
       "name": "Portfolio Category",

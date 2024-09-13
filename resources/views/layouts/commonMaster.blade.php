@@ -20,14 +20,17 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
 
+  <!--  <script src="https://cdn.tiny.cloud/1/ipxlzazsc7kme0kclvgunbc7v5w0r1aarxjsdn7e7977ocrz/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>-->
+     <!--ipxlzazsc7kme0kclvgunbc7v5w0r1aarxjsdn7e7977ocrz-->
 
-
+    
 
     <!-- Include Styles -->
     @include('layouts/sections/styles')
 
     <!-- Include Scripts for customizer, helper, analytics, config -->
     @include('layouts/sections/scriptsIncludes')
+    <script src="https://cdn.ckeditor.com/ckeditor5/12.3.0/classic/ckeditor.js"></script>
 </head>
 
 <body>
@@ -39,6 +42,10 @@
 
     <!-- Include Scripts -->
     @include('layouts/sections/scripts')
+  
+</script>
+
+</script>
 
 </body>
 
