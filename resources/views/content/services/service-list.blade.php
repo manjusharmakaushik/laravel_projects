@@ -31,13 +31,8 @@
                         searchable: false
                     },
                     {
-<<<<<<< Updated upstream
                         data: 'service_name',
                         name: 'service_name'
-=======
-                        data: 'servicetech_name',
-                        name: 'servicetech_name'
->>>>>>> Stashed changes
                     },
                     {
                         data: 'sort_desc',

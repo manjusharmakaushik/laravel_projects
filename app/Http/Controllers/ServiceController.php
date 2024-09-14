@@ -14,11 +14,7 @@ class ServiceController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-<<<<<<< Updated upstream
             $data = Service::select(['id', 'service_name', 'sort_desc', 'image', 'status']);
-=======
-            $data = Service::select(['id', 'servicetech_name', 'sort_desc', 'image', 'status']);
->>>>>>> Stashed changes
             return DataTables::of($data)
                 ->addIndexColumn()
 
@@ -42,7 +38,7 @@ class ServiceController extends Controller
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
-   
+
         return view('content.services.service-list');
     }
 
@@ -64,11 +60,7 @@ class ServiceController extends Controller
         }
 
         $service = new Service();
-<<<<<<< Updated upstream
         $service->service_name = $request->name;
-=======
-        $service->servicetech_name = $request->name;
->>>>>>> Stashed changes
         $service->sort_desc = $request->description;
 
         if ($request->hasFile('image')) {
@@ -126,11 +118,7 @@ class ServiceController extends Controller
 
         // Prepare data to update the service
         $data = [
-<<<<<<< Updated upstream
             'service_name' => $request->name,
-=======
-            'servicetech_name' => $request->name,
->>>>>>> Stashed changes
             'sort_desc' => $request->description,
         ];
 

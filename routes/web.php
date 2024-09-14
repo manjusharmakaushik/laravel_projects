@@ -37,7 +37,6 @@ Route::middleware('auth')->group(function () {
     Route::get('user-view/{id}', [UserController::class, 'view'])->name('user-view');
     Route::get('user-delete/{id}', [UserController::class, 'destory'])->name('user-delete');
     Route::post('user-status/{id}', [UserController::class, 'updateStatus'])->name('updateStatus');
-<<<<<<< Updated upstream
     
       //blog route
       Route::get('/blog-list', [BlogController::class, 'index'])->name('blog-list');
@@ -49,19 +48,6 @@ Route::middleware('auth')->group(function () {
       Route::get('blog-delete/{id}', [BlogController::class, 'destory'])->name('blog-delete');
       Route::post('blog-status/{id}', [BlogController::class, 'updateStatus'])->name('updateStatus');
     
-=======
-
-    //blog route
-    Route::get('/blog-list', [BlogController::class, 'index'])->name('blog-list');
-    Route::get('/blog-create', [BlogController::class, 'create'])->name('blog-create');
-    Route::post('/blog-store', [BlogController::class, 'store'])->name('blog-store');
-    Route::get('blog-edit/{id}', [BlogController::class, 'edit'])->name('blog-edit');
-    Route::put('blog-update/{id}', [BlogController::class, 'update'])->name('blog-update');
-    Route::get('blog-view/{id}', [BlogController::class, 'view'])->name('blog-view');
-    Route::get('blog-delete/{id}', [BlogController::class, 'destory'])->name('blog-delete');
-    Route::post('blog-status/{id}', [BlogController::class, 'updateStatus'])->name('updateStatus');
-
->>>>>>> Stashed changes
     //service category
     Route::get('/service-list', [ServiceController::class, 'index'])->name('service-list');
     Route::get('/service-create', [ServiceController::class, 'create'])->name('service-create');
