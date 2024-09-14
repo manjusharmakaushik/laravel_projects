@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Service')
+@section('title', 'portfolios')
 
 @section('vendor-style')
     <style>
@@ -20,10 +20,10 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#serviceDataTable').DataTable({
+            $('#portfolioDataTbale').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('service-list') }}',
+                ajax: '{{ route('portfolio-list') }}',
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -31,45 +31,25 @@
                         searchable: false
                     },
                     {
-<<<<<<< Updated upstream
-                        data: 'service_name',
-                        name: 'service_name'
-=======
-                        data: 'servicetech_name',
-                        name: 'servicetech_name'
->>>>>>> Stashed changes
+                        data: 'project_name',
+                        name: 'project_name'
                     },
                     {
-                        data: 'sort_desc',
-                        name: 'sort_desc'
+                        data: 'sort_disc',
+                        name: 'sort_disc'
                     },
                     {
-    data: 'image',
-    name: 'image',
-    render: function(data, type, row) {
-        var imageUrl = data;
-        var defaultImageUrl = 'assets/def-image/no-image.png';
-
-        // Return an image element with CSS fallback
-        return `
-            <div style="
-                width: 130px; 
-                height: 80px; 
-                background-image: url('${defaultImageUrl}');
-                background-size: cover; 
-                background-position: center;
-                background-repeat: no-repeat;
-                text-align: center;
-                line-height: 80px;
-                color: #999;
-            ">
-                <img src="${imageUrl}" onerror="this.style.display='none'; this.parentElement.style.backgroundImage='url(${defaultImageUrl})';" 
-                     alt="Image" style="width:130px; height:80px; display:block;"/>
-            </div>`;
-    }
-},
-
-
+                        data: 'project_complete_year',
+                        name: 'project_complete_year'
+                    },
+                    {
+                        data: 'technology',
+                        name: 'technology'
+                    },
+                    {
+                        data: 'project_image',
+                        name: 'project_image'
+                    },
                     {
                         data: 'status',
                         name: 'status',
@@ -91,13 +71,13 @@
                 dom: '<"top"lf>rt<"bottom"ip><"clear">',
                 autoWidth: false,
                 initComplete: function() {
-
+                    // Append the add button after the search input
                     $(".dataTables_filter").prepend(
-                        '<button class="btn btn-primary mr-3" id="addService">Add Service</button>'
+                        '<button class="btn btn-primary mr-3" id="addPortfolio">Add portfolio</button>'
                     );
-                    $('#addService').on('click', function() {
+                    $('#addPortfolio').on('click', function() {
                         window.location.href =
-                            '{{ route('service-create') }}';
+                            '{{ route('portfolio-create') }}'; // Add your URL for portfolio creation here
                     });
                 }
             });
@@ -105,12 +85,12 @@
             //status
             $(document).on('click', '.badge', function() {
                 var $this = $(this);
-                var serviceId = $this.data('id');
+                var portfolioId = $this.data('id');
                 var currentStatus = $this.text().trim() === 'Active' ? 1 : 0;
                 var newStatus = currentStatus === 1 ? 0 : 1;
 
                 $.ajax({
-                    url: '/service-status/' + serviceId,
+                    url: '/portfolio-status/' + portfolioId,
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -119,11 +99,11 @@
                     success: function(response) {
                         Swal.fire(
                             'Updated!',
-                            'Service status has been updated.',
+                            'portfolio status has been updated.',
                             'success'
                         );
 
-
+                        // Update badge based on new status
                         var newStatusText = newStatus === 1 ? 'Active' : 'Inactive';
                         var newStatusClass = newStatus === 1 ? 'bg-label-success' :
                             'bg-label-danger';
@@ -135,7 +115,7 @@
                     error: function(xhr) {
                         Swal.fire(
                             'Error!',
-                            'Failed to update service status.',
+                            'Failed to update portfolio status.',
                             'error'
                         );
                         console.error(xhr.responseText);
@@ -144,7 +124,7 @@
             });
         });
 
-        function deleteCategory(serviceId) {
+        function deleteCategory(portfolioId) {
 
             Swal.fire({
                 title: 'Are you sure?',
@@ -156,28 +136,28 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-
+                    // Send AJAX request to delete category
                     $.ajax({
-                        url: '/service-delete/' + serviceId,
-                        type: 'GET',
+                        url: '/portfolio-delete/' + portfolioId,
+                        type: 'GET', // or 'POST' depending on your route definition
                         success: function(response) {
                             Swal.fire(
                                 'Deleted!',
-                                'Your service has been deleted.',
+                                'Your portfolio has been deleted.',
                                 'success'
                             ).then(() => {
-
-                                $('#serviceDataTable').DataTable().ajax
-                                    .reload();
+                                // Optionally, reload the table or update the UI
+                                $('#portfolioDataTbale').DataTable().ajax
+                                    .reload(); // Reload DataTable
                             });
                         },
                         error: function(xhr) {
                             Swal.fire(
                                 'Error!',
-                                'Failed to delete service.',
+                                'Failed to delete portfolio.',
                                 'error'
                             );
-                            console.error(xhr.responseText);
+                            console.error(xhr.responseText); // Log the error for debugging
                         }
                     });
                 }
@@ -190,13 +170,15 @@
 
 @section('content')
 
-    <table id="serviceDataTable" class="table table-bordered">
+    <table id="portfolioDataTbale" class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Image</th>
+                <th>Project name</th>
+                <th>Sort disc</th>
+                <th>Project complete year</th>
+                <th>Technology</th>
+                <th>Project image</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>

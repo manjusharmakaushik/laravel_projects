@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Service')
+@section('title', 'Client Management')
 
 @section('vendor-style')
     <style>
@@ -11,6 +11,7 @@
     <!-- DataTables CSS from CDN -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 @endsection
+
 @section('vendor-script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
@@ -20,56 +21,29 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#serviceDataTable').DataTable({
+            $('#clientDatatabel').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('service-list') }}',
-                columns: [{
+                ajax: '{{ route('client-list') }}',
+                columns: [
+                    {
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
                         searchable: false
                     },
                     {
-<<<<<<< Updated upstream
-                        data: 'service_name',
-                        name: 'service_name'
-=======
-                        data: 'servicetech_name',
-                        name: 'servicetech_name'
->>>>>>> Stashed changes
+                        data: 'client_name',
+                        name: 'client_name'
                     },
                     {
                         data: 'sort_desc',
                         name: 'sort_desc'
                     },
                     {
-    data: 'image',
-    name: 'image',
-    render: function(data, type, row) {
-        var imageUrl = data;
-        var defaultImageUrl = 'assets/def-image/no-image.png';
-
-        // Return an image element with CSS fallback
-        return `
-            <div style="
-                width: 130px; 
-                height: 80px; 
-                background-image: url('${defaultImageUrl}');
-                background-size: cover; 
-                background-position: center;
-                background-repeat: no-repeat;
-                text-align: center;
-                line-height: 80px;
-                color: #999;
-            ">
-                <img src="${imageUrl}" onerror="this.style.display='none'; this.parentElement.style.backgroundImage='url(${defaultImageUrl})';" 
-                     alt="Image" style="width:130px; height:80px; display:block;"/>
-            </div>`;
-    }
-},
-
-
+                        data: 'client_image',
+                        name: 'client_image'
+                    },
                     {
                         data: 'status',
                         name: 'status',
@@ -79,8 +53,6 @@
                             return `<div class="badge ${statusClass}" data-id="${row.id}" id="status-${row.id}">${statusText}</div>`;
                         }
                     },
-
-
                     {
                         data: 'action',
                         name: 'action',
@@ -91,26 +63,25 @@
                 dom: '<"top"lf>rt<"bottom"ip><"clear">',
                 autoWidth: false,
                 initComplete: function() {
-
+                    // Append the add button after the search input
                     $(".dataTables_filter").prepend(
-                        '<button class="btn btn-primary mr-3" id="addService">Add Service</button>'
+                        '<button class="btn btn-primary mr-3" id="addClient">Add Client</button>'
                     );
-                    $('#addService').on('click', function() {
-                        window.location.href =
-                            '{{ route('service-create') }}';
+                    $('#addClient').on('click', function() {
+                        window.location.href = '{{ route('client-create') }}'; // Add your URL for client creation here
                     });
                 }
             });
 
-            //status
+            //status toggle
             $(document).on('click', '.badge', function() {
                 var $this = $(this);
-                var serviceId = $this.data('id');
+                var clientId = $this.data('id');
                 var currentStatus = $this.text().trim() === 'Active' ? 1 : 0;
                 var newStatus = currentStatus === 1 ? 0 : 1;
 
                 $.ajax({
-                    url: '/service-status/' + serviceId,
+                    url: '/client-status/' + clientId,
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -119,14 +90,13 @@
                     success: function(response) {
                         Swal.fire(
                             'Updated!',
-                            'Service status has been updated.',
+                            'Client status has been updated.',
                             'success'
                         );
 
-
+                        // Update badge based on new status
                         var newStatusText = newStatus === 1 ? 'Active' : 'Inactive';
-                        var newStatusClass = newStatus === 1 ? 'bg-label-success' :
-                            'bg-label-danger';
+                        var newStatusClass = newStatus === 1 ? 'bg-label-success' : 'bg-label-danger';
 
                         $this.text(newStatusText)
                             .removeClass('bg-label-success bg-label-danger')
@@ -135,7 +105,7 @@
                     error: function(xhr) {
                         Swal.fire(
                             'Error!',
-                            'Failed to update service status.',
+                            'Failed to update client status.',
                             'error'
                         );
                         console.error(xhr.responseText);
@@ -144,8 +114,7 @@
             });
         });
 
-        function deleteCategory(serviceId) {
-
+        function deleteClient(clientId) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'You won\'t be able to revert this!',
@@ -156,25 +125,23 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-
+                    // Send AJAX request to delete client
                     $.ajax({
-                        url: '/service-delete/' + serviceId,
+                        url: '/client-delete/' + clientId,
                         type: 'GET',
                         success: function(response) {
                             Swal.fire(
                                 'Deleted!',
-                                'Your service has been deleted.',
+                                'Client has been deleted.',
                                 'success'
                             ).then(() => {
-
-                                $('#serviceDataTable').DataTable().ajax
-                                    .reload();
+                                $('#clientDatatabel').DataTable().ajax.reload(); // Reload DataTable
                             });
                         },
                         error: function(xhr) {
                             Swal.fire(
                                 'Error!',
-                                'Failed to delete service.',
+                                'Failed to delete client.',
                                 'error'
                             );
                             console.error(xhr.responseText);
@@ -185,18 +152,17 @@
         }
     </script>
 
-
 @endsection
 
 @section('content')
 
-    <table id="serviceDataTable" class="table table-bordered">
+    <table id="clientDatatabel" class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Image</th>
+                <th>Client Name</th>
+                <th>Short Description</th>
+                <th>Client Image</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>

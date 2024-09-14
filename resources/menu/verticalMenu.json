@@ -38,6 +38,12 @@
       "slug": "portfolio-list"
     },
     {
+      "url": "/testimonial-list",
+      "name": "Testimonial",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "testimonial-list"
+    },
+    {
       "url": "/client-list",
       "name": "Client",
       "icon": "menu-icon tf-icons ri-user-line",

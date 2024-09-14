@@ -3,28 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Service;
+use App\Models\servicetechegory;
+use App\Models\ServiceTech;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use Exception;
 
-class ServiceController extends Controller
+class ServiceTechController extends Controller
 {
     public function index()
     {
         if (request()->ajax()) {
-<<<<<<< Updated upstream
-            $data = Service::select(['id', 'service_name', 'sort_desc', 'image', 'status']);
-=======
-            $data = Service::select(['id', 'servicetech_name', 'sort_desc', 'image', 'status']);
->>>>>>> Stashed changes
+            $data = ServiceTech::join('service_tech_categories','service_teches.service_id','=','service_tech_categories.service_id')->select(['service_id','id', 'name', 'image', 'status']);
             return DataTables::of($data)
                 ->addIndexColumn()
 
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('service-edit', ['id' => $row->id]);
-                    $viewUrl = route('service-view', ['id' => $row->id]);
+                    $editUrl = route('service-tech-edit', ['id' => $row->id]);
+                    $viewUrl = route('service-tech-view', ['id' => $row->id]);
 
                     return '<div class="d-inline-block text-nowrap">
                                 <a href="' . $viewUrl . '" class="btn btn-sm btn-icon btn-text-secondary waves-effect rounded-pill text-body me-1 view-button">
@@ -42,20 +39,19 @@ class ServiceController extends Controller
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
-   
-        return view('content.services.service-list');
+
+        return view('content.servicetech.servicetech-list');
     }
 
 
     public function create()
     {
-        return view('content.services.service-add');
+        return view('content.servicetech.servicetech-add');
     }
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -63,13 +59,8 @@ class ServiceController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $service = new Service();
-<<<<<<< Updated upstream
-        $service->service_name = $request->name;
-=======
-        $service->servicetech_name = $request->name;
->>>>>>> Stashed changes
-        $service->sort_desc = $request->description;
+        $servicetech = new ServiceTech();
+        $servicetech->name = $request->name;
 
         if ($request->hasFile('image')) {
 
@@ -77,21 +68,21 @@ class ServiceController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = 'images/' . $imageName;
             $image->move(public_path('images'), $imageName);
-            $service->image = $imagePath;
+            $servicetech->image = $imagePath;
 
         }
 
-        $service->save();
-        return redirect()->route('service-list')->with('success', 'Service added successfully!');
+        $servicetech->save();
+        return redirect()->route('service-tech-list')->with('success', 'Service Tech Category added successfully!');
     }
 
     public function edit(Request $request, $id)
     {
         try {
-            $editService = Service::findOrFail($id);
-            return view('content.services.service-edit', compact('editService'));
+            $editServicetech = ServiceTech::findOrFail($id);
+            return view('content.servicetech.servicetech-edit', compact('editServicetech'));
         } catch (Exception $e) {
-            return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
+            return redirect()->route('servicetech-list')->with('error', 'Something went wrong! Please try again.');
 
         }
     }
@@ -100,15 +91,15 @@ class ServiceController extends Controller
     public function destory(Request $request, $id)
     {
         try {
-            $service = Service::findOrFail($id);
-            if ($service->image && file_exists(public_path($service->image))) {
-                unlink(public_path($service->image));
+            $service = ServiceTech::findOrFail($id);
+            if ($servicetech->image && file_exists(public_path($servicetech->image))) {
+                unlink(public_path($servicetech->image));
             }
-            $service->delete();
+            $servicetech->delete();
 
-            return redirect()->route('service-list')->with('success', 'Service deleted successfully!');
+            return redirect()->route('servicetech-list')->with('success', 'Service Tech Cat deleted successfully!');
         } catch (Exception $e) {
-            return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
+            return redirect()->route('servicetech-list')->with('error', 'Something went wrong! Please try again.');
         }
     }
 
@@ -117,28 +108,22 @@ class ServiceController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Find the service by ID or fail
-        $service = Service::findOrFail($id);
+        $service = ServiceTech::findOrFail($id);
 
         // Prepare data to update the service
         $data = [
-<<<<<<< Updated upstream
-            'service_name' => $request->name,
-=======
-            'servicetech_name' => $request->name,
->>>>>>> Stashed changes
-            'sort_desc' => $request->description,
+            'name' => $request->name,
         ];
 
         // Handle the image upload
         if ($request->hasFile('image')) {
             // Check if there is an old image and if it exists, delete it
-            if ($service->image && file_exists(public_path($service->image))) {
-                unlink(public_path($service->image)); // Delete the previous image
+            if ($servicetech->image && file_exists(public_path($servicetech->image))) {
+                unlink(public_path($servicetech->image)); // Delete the previous image
             }
 
             // Process the new image
@@ -155,17 +140,17 @@ class ServiceController extends Controller
 
         // Attempt to update the service in the database
         try {
-            $service->update($data);
-            return redirect()->route('service-list')->with('success', 'Service updated successfully!');
+            $servicetech->update($data);
+            return redirect()->route('servicetech-list')->with('success', 'Service Tech Category updated successfully!');
         } catch (Exception $e) {
-            return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
+            return redirect()->route('servicetech-list')->with('error', 'Something went wrong! Please try again.');
         }
     }
 
     public function updateStatus(Request $request, $id)
     {
         try {
-            $serviceStatus = Service::findOrFail($id);
+            $serviceStatus = ServiceTech::findOrFail($id);
             $serviceStatus->status = $request->status;
             $serviceStatus->save();
 
@@ -177,12 +162,12 @@ class ServiceController extends Controller
     public function view(Request $request, $id)
     {
         try {
-            $viewService = Service::findOrFail($id);
-            return view('content.services.service-view', compact('viewService'));
+            $viewServicetech = ServiceTech::findOrFail($id);
+            return view('content.servicetech.servicetech-view', compact('viewServicetech'));
         } catch (Exception $e) {
-            return redirect()->route('service-list')->with('error', 'Something went wrong! Please try again.');
+            return redirect()->route('servicetech-list')->with('error', 'Something went wrong! Please try again.');
         }
     }
 
-
 }
+

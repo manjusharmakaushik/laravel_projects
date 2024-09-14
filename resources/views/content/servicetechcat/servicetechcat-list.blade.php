@@ -23,7 +23,7 @@
             $('#serviceDataTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('service-list') }}',
+                ajax: '{{ route('service-tech-cat-list') }}',
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -31,45 +31,19 @@
                         searchable: false
                     },
                     {
-<<<<<<< Updated upstream
-                        data: 'service_name',
-                        name: 'service_name'
-=======
                         data: 'servicetech_name',
                         name: 'servicetech_name'
->>>>>>> Stashed changes
                     },
                     {
-                        data: 'sort_desc',
-                        name: 'sort_desc'
+                        data: 'image',
+                        name: 'image',
+                        render: function(data, type, row) {
+
+                            var imageUrl = data;
+
+                            return `<img src="${imageUrl}" alt="Image" class="mt-3" style="width:130px; height:80px;">`;
+                        }
                     },
-                    {
-    data: 'image',
-    name: 'image',
-    render: function(data, type, row) {
-        var imageUrl = data;
-        var defaultImageUrl = 'assets/def-image/no-image.png';
-
-        // Return an image element with CSS fallback
-        return `
-            <div style="
-                width: 130px; 
-                height: 80px; 
-                background-image: url('${defaultImageUrl}');
-                background-size: cover; 
-                background-position: center;
-                background-repeat: no-repeat;
-                text-align: center;
-                line-height: 80px;
-                color: #999;
-            ">
-                <img src="${imageUrl}" onerror="this.style.display='none'; this.parentElement.style.backgroundImage='url(${defaultImageUrl})';" 
-                     alt="Image" style="width:130px; height:80px; display:block;"/>
-            </div>`;
-    }
-},
-
-
                     {
                         data: 'status',
                         name: 'status',
@@ -93,11 +67,11 @@
                 initComplete: function() {
 
                     $(".dataTables_filter").prepend(
-                        '<button class="btn btn-primary mr-3" id="addService">Add Service</button>'
+                        '<button class="btn btn-primary mr-3" id="addServicetechcat">Add Service Tech Category</button>'
                     );
-                    $('#addService').on('click', function() {
+                    $('#addServicetechcat').on('click', function() {
                         window.location.href =
-                            '{{ route('service-create') }}';
+                            '{{ route('service-tech-cat-create') }}';
                     });
                 }
             });
@@ -110,7 +84,7 @@
                 var newStatus = currentStatus === 1 ? 0 : 1;
 
                 $.ajax({
-                    url: '/service-status/' + serviceId,
+                    url: '/service-tech-cat-status/' + serviceId,
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -158,7 +132,7 @@
                 if (result.isConfirmed) {
 
                     $.ajax({
-                        url: '/service-delete/' + serviceId,
+                        url: '/service-tech-cat-delete/' + serviceId,
                         type: 'GET',
                         success: function(response) {
                             Swal.fire(
@@ -194,8 +168,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
+                <th>Service Tech Category</th>
                 <th>Image</th>
                 <th>Status</th>
                 <th>Actions</th>

@@ -19,11 +19,11 @@
         <!-- Service Information -->
         <div class="card mb-6">
             <div class="card-header">
-                <h5 class="card-title mb-0">Edit Service Information</h5>
+                <h5 class="card-title mb-0">Edit Service tech Category</h5>
             </div>
 
             <div class="card-body">
-                <form id="editserviceForm" action="{{ route('service-update', $editService->id) }}" method="POST"
+                <form id="editServicetechForm" action="{{ route('service-tech-update', $editServicetech->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -31,15 +31,23 @@
                     <!-- Service Name -->
                     <div class="row gx-5 mb-5">
                         <div class="col">
+                        <div class="form-floating form-floating-outline">
+                                <select name="service_id" class="form-control" id="service_id" required>
+                                    <option value="">Select Category</option>
+                                    @foreach ($service_tech_categories as $service_tech_category)
+                                        <option value="{{ $service_tech_category->service_id }}" {{ $editServicetech->service_id == $service_tech_category->service_id ? 'selected' : '' }}>{{ $service_tech_category->service_name }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="name">Services Tech Category</label>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <div class="form-floating form-floating-outline">
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
                                     id="name" placeholder="Enter Services Name" name="name" aria-label="Full Name"
-<<<<<<< Updated upstream
-                                    value="{{ old('name', $editService->service_name ?? '') }}">
-=======
-                                    value="{{ old('name', $editService->servicetech_name ?? '') }}">
->>>>>>> Stashed changes
-                                <label for="name">Services Name</label>
+                                    value="{{ old('name', $editServicetech->name ?? '') }}">
+                                <label for="name">Services Tech Category</label>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -56,12 +64,9 @@
                                 <!-- Image preview container -->
                                 <div class="mt-3">
                                     <!-- Display the current image if it exists -->
-                                    @if ($editService->image && file_exists(public_path($editService->image)))
-                                        <!-- Display the current image if it exists -->
-                                        <img src="{{ asset($editService->image) }}" id="currentImage" alt="Current Image" style="width: 150px; height: auto;">
-                                    @else
-                                        <!-- Display the default "no image" placeholder -->
-                                        <img src="{{ asset('assets/def-image/no-image.png') }}" id="currentImage"  class=" waves-light" alt="No Image Available" style="width: 100px; height: auto;border:2px solid grey;">
+                                    @if (isset($editServicetech->image) && !empty($editServicetech->image))
+                                        <img src="{{ asset($editServicetech->image) }}" id="currentImage" alt="Current Image"
+                                            style="width: 150px; height: auto;">
                                     @endif
                                     <!-- Preview the new image -->
                                     <img id="imagePreview" src="" alt="Image preview"
@@ -71,17 +76,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Short Description -->
-                    <div class="row gx-5 mb-5">
-                        <div class="col-sm-6">
-                            <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror"
-                                placeholder="Short Description" aria-label="Short Description">{{ old('description', $editService->sort_desc ?? '') }}</textarea>
-                            @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                     </div>
 
@@ -118,7 +112,7 @@
             });
 
             // Handle form submission with AJAX
-            $('#editserviceForm').on('submit', function(event) {
+            $('#editServicetechForm').on('submit', function(event) {
                 event.preventDefault();
 
                 clearValidationErrors(); // Clear previous validation messages
@@ -142,12 +136,6 @@
                     valid = false;
                 }
 
-                if ($('#description').val().trim() === '') {
-                    $('#description').addClass('is-invalid');
-                    $('#description').after('<div class="invalid-feedback">Description is required.</div>');
-                    valid = false;
-                }
-
                 if (!valid) return;
 
                 $.ajax({
@@ -162,7 +150,7 @@
                             title: 'Success',
                             text: 'Service updated successfully!'
                         }).then(function() {
-                            window.location.href = "{{ route('service-list') }}";
+                            window.location.href = "{{ route('service-tech-list') }}";
                         });
                     },
                     error: function(response) {

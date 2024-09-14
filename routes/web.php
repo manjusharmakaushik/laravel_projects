@@ -2,11 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ServiceSectorController;
 use App\Http\Controllers\PortfolioCategoryController;
+use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ServiceTechCategoryController;
+use App\Http\Controllers\ServiceTechController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -32,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('user-view/{id}', [UserController::class, 'view'])->name('user-view');
     Route::get('user-delete/{id}', [UserController::class, 'destory'])->name('user-delete');
     Route::post('user-status/{id}', [UserController::class, 'updateStatus'])->name('updateStatus');
+<<<<<<< Updated upstream
     
       //blog route
       Route::get('/blog-list', [BlogController::class, 'index'])->name('blog-list');
@@ -43,6 +49,19 @@ Route::middleware('auth')->group(function () {
       Route::get('blog-delete/{id}', [BlogController::class, 'destory'])->name('blog-delete');
       Route::post('blog-status/{id}', [BlogController::class, 'updateStatus'])->name('updateStatus');
     
+=======
+
+    //blog route
+    Route::get('/blog-list', [BlogController::class, 'index'])->name('blog-list');
+    Route::get('/blog-create', [BlogController::class, 'create'])->name('blog-create');
+    Route::post('/blog-store', [BlogController::class, 'store'])->name('blog-store');
+    Route::get('blog-edit/{id}', [BlogController::class, 'edit'])->name('blog-edit');
+    Route::put('blog-update/{id}', [BlogController::class, 'update'])->name('blog-update');
+    Route::get('blog-view/{id}', [BlogController::class, 'view'])->name('blog-view');
+    Route::get('blog-delete/{id}', [BlogController::class, 'destory'])->name('blog-delete');
+    Route::post('blog-status/{id}', [BlogController::class, 'updateStatus'])->name('updateStatus');
+
+>>>>>>> Stashed changes
     //service category
     Route::get('/service-list', [ServiceController::class, 'index'])->name('service-list');
     Route::get('/service-create', [ServiceController::class, 'create'])->name('service-create');
@@ -72,4 +91,60 @@ Route::middleware('auth')->group(function () {
     Route::get('portfolio-cat-view/{id}', [PortfolioCategoryController::class, 'view'])->name('portfolio-cat-view');
     Route::get('portfolio-cat-delete/{id}', [PortfolioCategoryController::class, 'destory'])->name('portfolio-cat-delete');
     Route::post('portfolio-cat-status/{id}', [PortfolioCategoryController::class, 'updateStatus'])->name('updateStatus');
+
+
+    // Client Routes Group
+    Route::get('/client-list', [ClientController::class, 'index'])->name('client-list');
+
+    Route::get('/client-create', [ClientController::class, 'create'])->name('client-create');
+    Route::post('/client-store', [ClientController::class, 'store'])->name('client-store');
+    Route::get('/client-edit/{id}', [ClientController::class, 'edit'])->name('client-edit');
+    Route::put('/client-update/{id}', [ClientController::class, 'update'])->name('client-update');
+    Route::get('/client-view/{id}', [ClientController::class, 'show'])->name('client-view');
+    Route::get('/client-delete/{id}', [ClientController::class, 'destroy'])->name('client-delete');
+    Route::post('/client-status/{id}', [ClientController::class, 'updateStatus'])->name('client-status');
+
+
+    // Testimonial Route 
+    Route::get('/testimonial-list', [TestimonialController::class, 'index'])->name('testimonial-list');
+
+    Route::get('/testimonial-create', [TestimonialController::class, 'create'])->name('testimonial-create');
+    Route::post('/testimonial-store', [TestimonialController::class, 'store'])->name('testimonial-store');
+    Route::get('/testimonial-edit/{id}', [TestimonialController::class, 'edit'])->name('testimonial-edit');
+    Route::put('/testimonial-update/{id}', [TestimonialController::class, 'update'])->name('testimonial-update');
+    Route::get('/testimonial-view/{id}', [TestimonialController::class, 'show'])->name('testimonial-view');
+    Route::get('/testimonial-delete/{id}', [TestimonialController::class, 'destroy'])->name('testimonial-delete');
+    Route::post('/testimonial-status/{id}', [TestimonialController::class, 'updateStatus'])->name('testimonial-status');
+
+
+
+    //Portfolio 
+    Route::get('/portfolio-list', [PortfolioController::class, 'index'])->name('portfolio-list');
+    Route::get('/portfolio-create', [PortfolioController::class, 'create'])->name('portfolio-create');
+    Route::post('/portfolio-store', [PortfolioController::class, 'store'])->name('portfolio-store');
+    Route::get('portfolio-edit/{id}', [PortfolioController::class, 'edit'])->name('portfolio-edit');
+    Route::put('portfolio-update/{id}', [PortfolioController::class, 'update'])->name('portfolio-update');
+    Route::get('portfolio-view/{id}', [PortfolioController::class, 'view'])->name('portfolio-view');
+    Route::get('portfolio-delete/{id}', [PortfolioController::class, 'destory'])->name('portfolio-delete');
+    Route::post('portfolio-status/{id}', [PortfolioController::class, 'updatePortStatus'])->name('updatePortStatus');
+
+    //service Tech category
+    Route::get('/service-tech-cat-list', [ServiceTechCategoryController::class, 'index'])->name('service-tech-cat-list');
+    Route::get('/service-tech-cat-create', [ServiceTechCategoryController::class, 'create'])->name('service-tech-cat-create');
+    Route::post('/service-tech-cat-store', [ServiceTechCategoryController::class, 'store'])->name('service-tech-cat-store');
+    Route::get('service-tech-cat-edit/{id}', [ServiceTechCategoryController::class, 'edit'])->name('service-tech-cat-edit');
+    Route::put('service-tech-cat-update/{id}', [ServiceTechCategoryController::class, 'update'])->name('service-tech-cat-update');
+    Route::get('service-tech-cat-view/{id}', [ServiceTechCategoryController::class, 'view'])->name('service-tech-cat-view');
+    Route::get('service-tech-cat-delete/{id}', [ServiceTechCategoryController::class, 'destory'])->name('service-tech-cat-delete');
+    Route::post('service-tech-cat-status/{id}', [ServiceTechCategoryController::class, 'updateStatus'])->name('updateStatus');
+
+    //service tech
+    Route::get('/service-tech-list', [ServiceTechController::class, 'index'])->name('service-tech-list');
+    Route::get('/service-tech-create', [ServiceTechController::class, 'create'])->name('service-tech-create');
+    Route::post('/service-tech-store', [ServiceTechController::class, 'store'])->name('service-tech-store');
+    Route::get('service-tech-edit/{id}', [ServiceTechController::class, 'edit'])->name('service-tech-edit');
+    Route::put('service-tech-update/{id}', [ServiceTechController::class, 'update'])->name('service-tech-update');
+    Route::get('service-tech-view/{id}', [ServiceTechController::class, 'view'])->name('service-tech-view');
+    Route::get('service-tech-delete/{id}', [ServiceTechController::class, 'destory'])->name('service-tech-delete');
+    Route::post('service-tech-status/{id}', [ServiceTechController::class, 'updateStatus'])->name('updateStatus');
 });

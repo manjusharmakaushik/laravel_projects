@@ -19,11 +19,11 @@
         <!-- Service Information -->
         <div class="card mb-6">
             <div class="card-header">
-                <h5 class="card-title mb-0">Edit Service Information</h5>
+                <h5 class="card-title mb-0">Edit Service tech Category</h5>
             </div>
 
             <div class="card-body">
-                <form id="editserviceForm" action="{{ route('service-update', $editService->id) }}" method="POST"
+                <form id="editservicetechcatForm" action="{{ route('service-tech-cat-update', $editServicetechcat->service_id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -33,14 +33,10 @@
                         <div class="col">
                             <div class="form-floating form-floating-outline">
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    id="name" placeholder="Enter Services Name" name="name" aria-label="Full Name"
-<<<<<<< Updated upstream
-                                    value="{{ old('name', $editService->service_name ?? '') }}">
-=======
-                                    value="{{ old('name', $editService->servicetech_name ?? '') }}">
->>>>>>> Stashed changes
-                                <label for="name">Services Name</label>
-                                @error('name')
+                                    id="servicetech_name" placeholder="Enter Services Name" name="servicetech_name" aria-label="Full Name"
+                                    value="{{ old('servicetech_name', $editServicetechcat->servicetech_name ?? '') }}">
+                                <label for="name">Services Tech Category</label>
+                                @error('servicetech_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -56,12 +52,9 @@
                                 <!-- Image preview container -->
                                 <div class="mt-3">
                                     <!-- Display the current image if it exists -->
-                                    @if ($editService->image && file_exists(public_path($editService->image)))
-                                        <!-- Display the current image if it exists -->
-                                        <img src="{{ asset($editService->image) }}" id="currentImage" alt="Current Image" style="width: 150px; height: auto;">
-                                    @else
-                                        <!-- Display the default "no image" placeholder -->
-                                        <img src="{{ asset('assets/def-image/no-image.png') }}" id="currentImage"  class=" waves-light" alt="No Image Available" style="width: 100px; height: auto;border:2px solid grey;">
+                                    @if (isset($editServicetechcat->image) && !empty($editServicetechcat->image))
+                                        <img src="{{ asset($editServicetechcat->image) }}" id="currentImage" alt="Current Image"
+                                            style="width: 150px; height: auto;">
                                     @endif
                                     <!-- Preview the new image -->
                                     <img id="imagePreview" src="" alt="Image preview"
@@ -71,17 +64,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Short Description -->
-                    <div class="row gx-5 mb-5">
-                        <div class="col-sm-6">
-                            <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror"
-                                placeholder="Short Description" aria-label="Short Description">{{ old('description', $editService->sort_desc ?? '') }}</textarea>
-                            @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                     </div>
 
@@ -118,7 +100,7 @@
             });
 
             // Handle form submission with AJAX
-            $('#editserviceForm').on('submit', function(event) {
+            $('#editservicetechcatForm').on('submit', function(event) {
                 event.preventDefault();
 
                 clearValidationErrors(); // Clear previous validation messages
@@ -130,21 +112,15 @@
                 var valid = true;
 
                 // Client-side validation
-                if ($('#name').val().trim() === '') {
-                    $('#name').addClass('is-invalid');
-                    $('#name').after('<div class="invalid-feedback">Service Name is required.</div>');
+                if ($('#servicetech_name').val().trim() === '') {
+                    $('#servicetech_name').addClass('is-invalid');
+                    $('#servicetech_name').after('<div class="invalid-feedback">Service Name is required.</div>');
                     valid = false;
                 }
 
                 if ($('#image')[0].files.length === 0 && !$('#currentImage').attr('src')) {
                     $('#image').addClass('is-invalid');
                     $('#image').after('<div class="invalid-feedback">Image is required.</div>');
-                    valid = false;
-                }
-
-                if ($('#description').val().trim() === '') {
-                    $('#description').addClass('is-invalid');
-                    $('#description').after('<div class="invalid-feedback">Description is required.</div>');
                     valid = false;
                 }
 
@@ -162,7 +138,7 @@
                             title: 'Success',
                             text: 'Service updated successfully!'
                         }).then(function() {
-                            window.location.href = "{{ route('service-list') }}";
+                            window.location.href = "{{ route('service-tech-cat-list') }}";
                         });
                     },
                     error: function(response) {
