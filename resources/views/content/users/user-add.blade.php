@@ -28,14 +28,14 @@
                     <div class="row gx-5 mb-5">
                         <div class="col">
                             <div class="form-floating form-floating-outline">
-                                <input type="text" class="form-control" id="name" placeholder="Enter Name"
+                                <input type="text" class="form-control" id="name" 
                                     name="name" aria-label="Full Name">
                                 <label for="name">Full Name</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-floating form-floating-outline">
-                                <input type="email" class="form-control" id="email" placeholder="Enter Email"
+                                <input type="text" class="form-control" id="email" placeholder="Enter Email"
                                     name="email" aria-label="Email">
                                 <label for="email">Email</label>
                             </div>
@@ -44,7 +44,7 @@
                     <div class="row gx-5 mb-5 mt-3">
                         <div class="col">
                             <div class="form-floating form-floating-outline">
-                                <input type="number" class="form-control" id="number" placeholder="Enter Number"
+                                <input type="number" class="form-control" id="number" 
                                     name="number" aria-label="Phone Number">
                                 <label for="number">Number</label>
                             </div>
@@ -76,9 +76,92 @@
     </div>
 
     <script>
+    
         $(document).ready(function() {
             $('#userForm').on('submit', function(e) {
                 e.preventDefault(); // Prevent form submission
+                function isValidEmail(email) {
+                    // Regular expression for basic email validation
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailRegex.test(email);
+                }
+                                $('.form-control').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+
+                var formData = new FormData(this);
+                
+               // Assume `valid` is initially set to true
+                let valid = true;
+                var pattern = /^[a-zA-Z ]+$/;
+                // Client-side validation
+
+                const name=$('#name').val().trim(); 
+                // Clear previous error messages and styles
+                $('.form-control').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+                // Validate name
+                if ($('#name').val().trim() === '') {
+                        $('#name').addClass('is-invalid');
+                        $('#name').after('<div class="invalid-feedback">Name is required.</div>');
+                        valid = false;
+                    }
+                else if(!pattern.test(name) && name !=''){
+                        $('#name').addClass('is-invalid');
+                                        $('#name').after('<div class="invalid-feedback">only alphabets are required</div>');
+                                        valid = false;
+                    }
+            // Validate email
+            const emailValue = $('#email').val().trim();
+            if (emailValue === '') {
+                $('#email').addClass('is-invalid');
+                $('#email').after('<div class="invalid-feedback">Email is required.</div>');
+                valid = false;
+            } else if (!isValidEmail(emailValue)) {
+                $('#email').addClass('is-invalid');
+                $('#email').after('<div class="invalid-feedback">Please enter a valid email address.</div>');
+                valid = false;
+            }
+
+            // Validate number
+            if ($('#number').val().trim() === '') {
+                $('#number').addClass('is-invalid');
+                $('#number').after('<div class="invalid-feedback">Number is required.</div>');
+                valid = false;
+            }
+
+    // Validate password
+    //const passwordValue = $('#password').val().trim();
+    const passwordValue=$('#password').val().trim();  
+                const hasLowercase = /[a-z]/.test(passwordValue);
+                const hasUppercase = /[A-Z]/.test(passwordValue);
+                const hasNumbers = /\d/.test(passwordValue);
+                const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(passwordValue);
+    if (passwordValue === '') {
+        $('#password').addClass('is-invalid');
+        $('#password').after('<div class="invalid-feedback">Password is required.</div>');
+        valid = false;
+    } 
+
+    else if (!hasLowercase || !hasUppercase || !hasNumbers || !hasSpecial) {
+
+        $('#password').addClass('is-invalid');
+        $('#password').after('<div class="invalid-feedback">Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character</div>');
+        valid = false;
+   
+  }
+
+  else if (passwordValue.length < 6) {
+        $('#password').addClass('is-invalid');
+        $('#password').after('<div class="invalid-feedback">Password must be at least 6 characters long.</div>');
+        valid = false;
+    }
+
+if (!valid) {
+    // Prevent form submission or handle accordingly
+    return; // Use this line to prevent form submission if inside a form submit handler
+}
+
+// Proceed with form submission or other logic if valid
 
                 $.ajax({
                     url: "{{ route('user-store') }}", // Laravel route for storing user data
@@ -94,10 +177,9 @@
                         });
                     },
                     error: function(xhr, status, error) {
-                        // Display error alert if something goes wrong
                         Swal.fire({
                             title: 'Error!',
-                            text: xhr.responseText,
+                            text: xhr.responseJSON.message || 'An error occurred.',
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
@@ -108,7 +190,20 @@
         });
     </script>
 
+<style>
+        .is-invalid {
+            border-color: #dc3545;
+        }
 
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875em;
+        }
+       
+   
+        </style>
+   
+       
 
 
 

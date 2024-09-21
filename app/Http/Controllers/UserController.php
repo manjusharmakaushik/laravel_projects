@@ -45,7 +45,7 @@ class UserController extends Controller
 
         return view('content.users.user-list');
     }
-
+    
     public function create()
     {
         return view('content.users.user-add');

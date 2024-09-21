@@ -34,11 +34,7 @@
                             <div class="form-floating form-floating-outline">
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
                                     id="name" placeholder="Enter Services Name" name="name" aria-label="Full Name"
-<<<<<<< Updated upstream
                                     value="{{ old('name', $editService->service_name ?? '') }}">
-=======
-                                    value="{{ old('name', $editService->servicetech_name ?? '') }}">
->>>>>>> Stashed changes
                                 <label for="name">Services Name</label>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -128,18 +124,34 @@
                 var formData = new FormData(this);
 
                 var valid = true;
-
+                var pattern = /^[a-zA-Z!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]+$/;
+                const name=$('#name').val().trim();  
                 // Client-side validation
                 if ($('#name').val().trim() === '') {
                     $('#name').addClass('is-invalid');
                     $('#name').after('<div class="invalid-feedback">Service Name is required.</div>');
                     valid = false;
                 }
-
+                else if(!pattern.test(name) && name !=''){
+                    $('#name').addClass('is-invalid');
+                                    $('#name').after('<div class="invalid-feedback">only alphabets are required</div>');
+                                    valid = false;
+                }
                 if ($('#image')[0].files.length === 0 && !$('#currentImage').attr('src')) {
                     $('#image').addClass('is-invalid');
                     $('#image').after('<div class="invalid-feedback">Image is required.</div>');
                     valid = false;
+                }
+
+                else if ($('#image')[0].files.length > 0) {
+                    const file = $('#image')[0].files[0];
+                    const fileType = file.type;
+
+                    if (fileType === 'image/gif') {
+                        $('#image').addClass('is-invalid');
+                        $('#image').after('<div class="invalid-feedback">GIF images are not allowed.</div>');
+                        valid = false;
+                    }
                 }
 
                 if ($('#description').val().trim() === '') {

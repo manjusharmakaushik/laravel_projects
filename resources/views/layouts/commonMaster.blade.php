@@ -22,6 +22,7 @@
 
   <!--  <script src="https://cdn.tiny.cloud/1/ipxlzazsc7kme0kclvgunbc7v5w0r1aarxjsdn7e7977ocrz/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>-->
      <!--ipxlzazsc7kme0kclvgunbc7v5w0r1aarxjsdn7e7977ocrz-->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     
 
@@ -30,7 +31,7 @@
 
     <!-- Include Scripts for customizer, helper, analytics, config -->
     @include('layouts/sections/scriptsIncludes')
-    <script src="https://cdn.ckeditor.com/ckeditor5/12.3.0/classic/ckeditor.js"></script>
+   
 </head>
 
 <body>

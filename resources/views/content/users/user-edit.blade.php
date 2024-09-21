@@ -39,7 +39,7 @@
                         </div>
                         <div class="col">
                             <div class="form-floating form-floating-outline">
-                                <input type="email" class="form-control" id="email" placeholder="Enter Email"
+                                <input type="text" class="form-control" id="email" placeholder="Enter Email"
                                     name="email" aria-label="Email" value="{{ $editUser->email ?? '' }}">
                                 <label for="email">Email</label>
                             </div>
@@ -68,11 +68,58 @@
         $(document).ready(function() {
             $('#edituserForm').on('submit', function(event) {
                 event.preventDefault();
-
+                function isValidEmail(email) {
+                    // Regular expression for basic email validation
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailRegex.test(email);
+                }
                 var form = $(this);
                 var url = form.attr('action');
                 var formData = new FormData(this);
+                // Assume `valid` is initially set to true
+                let valid = true;
+                var pattern = /^[a-zA-Z!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]+$/;
 
+                // Client-side validation
+
+                const name=$('#name').val().trim(); 
+                // Clear previous error messages and styles
+                $('.form-control').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+                // Validate name
+                if ($('#name').val().trim() === '') {
+                        $('#name').addClass('is-invalid');
+                        $('#name').after('<div class="invalid-feedback">Name is required.</div>');
+                        valid = false;
+                    }
+                else if(!pattern.test(name) && name !=''){
+                        $('#name').addClass('is-invalid');
+                                        $('#name').after('<div class="invalid-feedback">only alphabets are required</div>');
+                                        valid = false;
+                    }
+           // Validate email
+           const emailValue = $('#email').val().trim();
+            if (emailValue === '') {
+                $('#email').addClass('is-invalid');
+                $('#email').after('<div class="invalid-feedback">Email is required.</div>');
+                valid = false;
+            } else if (!isValidEmail(emailValue)) {
+                $('#email').addClass('is-invalid');
+                $('#email').after('<div class="invalid-feedback">Please enter a valid email address.</div>');
+                valid = false;
+            }
+
+            // Validate number
+            if ($('#number').val().trim() === '') {
+                $('#number').addClass('is-invalid');
+                $('#number').after('<div class="invalid-feedback">Number is required.</div>');
+                valid = false;
+            }
+
+            if (!valid) {
+    // Prevent form submission or handle accordingly
+    return; // Use this line to prevent form submission if inside a form submit handler
+}
                 $.ajax({
                     url: url,
                     type: 'POST',

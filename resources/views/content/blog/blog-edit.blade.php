@@ -92,13 +92,7 @@
                     <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary my-6">Update</button>
 
-                    <script>
-        ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
-    </script>
+               
                 </form>
 
             </div>
@@ -141,18 +135,33 @@
 
                 var valid = true;
 
-                // Client-side validation
+                var pattern = /^[a-zA-Z!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]+$/;
+                const name=$('#name').val().trim(); 
                 if ($('#name').val().trim() === '') {
                     $('#name').addClass('is-invalid');
-                    $('#name').after('<div class="invalid-feedback">Service Name is required.</div>');
+                    $('#name').after('<div class="invalid-feedback">Blog Name is required.</div>');
                     valid = false;
                 }
-
+                else if(!pattern.test(name) && name !=''){
+                    $('#name').addClass('is-invalid');
+                                    $('#name').after('<div class="invalid-feedback">only alphabets are required</div>');
+                                    valid = false;
+                }
                 if ($('#image')[0].files.length === 0 && !$('#currentImage').attr('src')) {
-                    $('#image').addClass('is-invalid');
-                    $('#image').after('<div class="invalid-feedback">Image is required.</div>');
-                    valid = false;
-                }
+                        $('#image').addClass('is-invalid');
+                        $('#image').after('<div class="invalid-feedback">Image is required.</div>');
+                        valid = false;
+                    } else if ($('#image')[0].files.length > 0) {
+                        const file = $('#image')[0].files[0];
+                        const fileType = file.type;
+
+                        if (fileType === 'image/gif') {
+                            $('#image').addClass('is-invalid');
+                            $('#image').after('<div class="invalid-feedback">GIF images are not allowed.</div>');
+                            valid = false;
+                        }
+}
+
 
                 if ($('#short_desc').val().trim() === '') {
                     $('#short_desc').addClass('is-invalid');

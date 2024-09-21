@@ -57,7 +57,7 @@ class BlogController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'short_desc' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'description' => 'required|string'
         ]);
         $description = $request->input('description');
@@ -100,7 +100,7 @@ class BlogController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
              'short_desc' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         // Find the blog by ID or fail

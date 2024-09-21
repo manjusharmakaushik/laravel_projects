@@ -77,10 +77,53 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+           $(document).ready(function() {
             $('#portfolioForm').on('submit', function(e) {
                 e.preventDefault(); // Prevent form submission
+                      // Clear previous error styles
+                      $('.form-control').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
 
+                var formData = new FormData(this);
+
+                var valid = true;
+                var pattern = /^[a-zA-Z!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]+$/;
+                const name=$('#name').val().trim(); 
+                // Client-side validation
+                if ($('#name').val().trim() === '') {
+                    $('#name').addClass('is-invalid');
+                    $('#name').after('<div class="invalid-feedback">Blog Name is required.</div>');
+                    valid = false;
+                }
+                else if(!pattern.test(name) && name !=''){
+                    $('#name').addClass('is-invalid');
+                                    $('#name').after('<div class="invalid-feedback">only alphabets are required</div>');
+                                    valid = false;
+                }
+             
+
+                if ($('#sort_disc').val().trim() === '') {
+                    $('#sort_disc').addClass('is-invalid');
+                    $('#sort_disc').after('<div class="invalid-feedback">Short Description is required.</div>');
+                    valid = false;
+                }
+             
+                if ($('#image')[0].files.length === 0) {
+                    $('#image').addClass('is-invalid');
+                    $('#image').after('<div class="invalid-feedback">Image is required.</div>');
+                    valid = false;
+                }
+                else if ($('#image')[0].files.length > 0) {
+                    const file = $('#image')[0].files[0];
+                    const fileType = file.type;
+
+                    if (fileType === 'image/gif') {
+                        $('#image').addClass('is-invalid');
+                        $('#image').after('<div class="invalid-feedback">GIF images are not allowed.</div>');
+                        valid = false;
+                    }
+                }
+                if (!valid) return;
                 $.ajax({
                     url: "{{ route('portfolio-store') }}", // Laravel route for storing portfolio data
                     type: "POST",

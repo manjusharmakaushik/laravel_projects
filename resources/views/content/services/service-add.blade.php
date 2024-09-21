@@ -28,14 +28,14 @@
                     <div class="row gx-5 mb-5">
                         <div class="col">
                             <div class="form-floating form-floating-outline">
-                                <input type="text" class="form-control" id="name" placeholder="Enter Services Name"
+                                <input type="text" class="form-control" id="name" 
                                     name="name" aria-label="Full Name">
-                                <label for="name">Services Name</label>
+                                <label for="name">Service Name</label>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-floating form-floating-outline">
-                                <input type="file" name="image" placeholder="Choose image" aria-label="Choose Image"
+                                <input type="file" name="image" aria-label="Choose Image"
                                     id="image" class="form-control">
                                 <label for="image">Image</label>
                                 <!-- Image preview container -->
@@ -48,8 +48,11 @@
                     </div>
                     <div class="row gx-5 mb-5">
                         <div class="col-sm-6">
-                            <textarea id="description" name="description" class="form-control" placeholder="Short Description"
+                        <div class="form-floating form-floating-outline">
+                            <textarea id="description" name="description" class="form-control" 
                                 aria-label="Short Description" aria-describedby="basic-icon-default-message2"></textarea>
+                                <label for="description">Short Description</label>
+                            </div>
                         </div>
                     </div>
 
@@ -74,20 +77,37 @@
                 var formData = new FormData(this);
 
                 var valid = true;
+                var pattern = /^[a-zA-Z!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]+$/;
 
                 // Client-side validation
+
+                const name=$('#name').val().trim();  
                 if ($('#name').val().trim() === '') {
                     $('#name').addClass('is-invalid');
                     $('#name').after('<div class="invalid-feedback">Service Name is required.</div>');
                     valid = false;
                 }
-
+                
+               else if(!pattern.test(name) && name !=''){
+                    $('#name').addClass('is-invalid');
+                                    $('#name').after('<div class="invalid-feedback">only alphabets are required</div>');
+                                    valid = false;
+                }
                 if ($('#image')[0].files.length === 0) {
                     $('#image').addClass('is-invalid');
                     $('#image').after('<div class="invalid-feedback">Image is required.</div>');
                     valid = false;
                 }
+                else if ($('#image')[0].files.length > 0) {
+                    const file = $('#image')[0].files[0];
+                    const fileType = file.type;
 
+                    if (fileType === 'image/gif') {
+                        $('#image').addClass('is-invalid');
+                        $('#image').after('<div class="invalid-feedback">GIF images are not allowed.</div>');
+                        valid = false;
+                    }
+                }
                 if ($('#description').val().trim() === '') {
                     $('#description').addClass('is-invalid');
                     $('#description').after('<div class="invalid-feedback">Description is required.</div>');
@@ -139,6 +159,7 @@
                 }
             });
         });
+
     </script>
 
     <style>
